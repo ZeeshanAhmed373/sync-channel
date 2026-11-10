@@ -1,221 +1,208 @@
 import streamlit as st
-from datetime import datetime
+import time
 
-# Compress layout and remove default header blocks completely
+# --- STREAMLIT CONFIGURATION ---
 st.set_page_config(
-    page_title="OmniSync 3D Pro", 
-    page_icon="⚡", 
-    layout="wide", 
+    page_title="PropAI | Luxury Rental Dashboard",
+    page_icon="🌐",
+    layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# Complete Production CSS Overrides for High Contrast Visibility & Photo Slideshow
+# --- INJECT CUSTOM MODERN GLASSMORPHIC CSS ---
 st.markdown("""
 <style>
-    /* Bright Electric Cyan color override for the top header bar decoration */
+    /* Global Background Slideshow & Reset */
+    .stApp {
+        background: linear-gradient(rgba(10, 10, 14, 0.85), rgba(10, 10, 14, 0.95)), 
+                    url('https://unsplash.com');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
+    /* Electric Cyan Top Accent Bar */
     header[data-testid="stHeader"] {
-        background-color: #00d1ff !important;
-        box-shadow: 0 2px 20px rgba(0, 209, 255, 0.4);
+        background-color: transparent !important;
+    }
+    header[data-testid="stHeader"]::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+        box-shadow: 0 2px 20px rgba(0, 242, 254, 0.6);
+        z-index: 999;
     }
 
-    /* Automated High-Definition Resort Photo Slideshow Core Engine */
-    [data-testid="stAppViewContainer"] {
-        background-size: cover !important;
-        background-position: center center !important;
-        background-repeat: no-repeat !important;
-        background-attachment: fixed !important;
-        animation: resortSlideshow 24s infinite ease-in-out !important;
+    /* High-End Glassmorphic Container Structure */
+    div[data-testid="stVerticalBlock"] > div {
+        background: rgba(255, 255, 255, 0.03) !important;
+        backdrop-filter: blur(12px) saturate(160%) !important;
+        -webkit-backdrop-filter: blur(12px) saturate(160%) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 16px !important;
+        padding: 24px !important;
+        margin-bottom: 20px;
+        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease !important;
     }
 
-    @keyframes resortSlideshow {
-        0%, 100% { 
-            background: linear-gradient(rgba(10, 25, 47, 0.82), rgba(10, 25, 47, 0.82)), 
-            url('https://unsplash.com') no-repeat center center fixed !important;
-            background-size: cover !important;
-        }
-        25% { 
-            background: linear-gradient(rgba(10, 25, 47, 0.82), rgba(10, 25, 47, 0.82)), 
-            url('https://unsplash.com') no-repeat center center fixed !important;
-            background-size: cover !important;
-        }
-        50% { 
-            background: linear-gradient(rgba(10, 25, 47, 0.82), rgba(10, 25, 47, 0.82)), 
-            url('https://unsplash.com') no-repeat center center fixed !important;
-            background-size: cover !important;
-        }
-        75% { 
-            background: linear-gradient(rgba(10, 25, 47, 0.82), rgba(10, 25, 47, 0.82)), 
-            url('https://unsplash.com') no-repeat center center fixed !important;
-            background-size: cover !important;
-        }
+    /* 3D Hardware Accelerated Hover Translations */
+    div[data-testid="stVerticalBlock"] > div:hover {
+        transform: translateY(-6px) scale(1.005) !important;
+        box-shadow: 0 20px 40px rgba(0, 242, 254, 0.15) !important;
+        border-color: rgba(0, 242, 254, 0.3) !important;
+    }
+
+    /* Universal Bright High-Contrast Text Overrides */
+    h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown {
+        color: #ffffff !important;
+        font-weight: 500;
+        text-shadow: 0px 2px 4px rgba(0,0,0,0.5);
     }
     
-    /* 3D Elevated Glassmorphism Panel Containers */
-    .dashboard-card {
-        background: rgba(10, 25, 47, 0.85) !important;
-        border: 1px solid rgba(0, 209, 255, 0.3) !important;
-        border-radius: 14px !important;
-        padding: 20px 24px !important;
-        box-shadow: 0 12px 40px -12px rgba(2, 12, 27, 0.9);
-        backdrop-filter: blur(25px) saturate(180%);
-        -webkit-backdrop-filter: blur(25px) saturate(180%);
-        margin-bottom: 16px;
-    }
-    
-    /* Input Container Field Adjustments */
-    div[data-testid="stTextInput"] > div, div[data-testid="stNumberInput"] > div {
-        background: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.35) !important;
+    /* Input Fields Styling (Overriding Streamlit Default Shadows) */
+    input, textarea, select, div[role="combobox"] {
+        background-color: rgba(20, 20, 25, 0.7) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
         border-radius: 8px !important;
     }
-    
-    /* Forces stark white text values for text entries and input fields */
-    div[data-testid="stTextInput"] input, div[data-testid="stNumberInput"] input {
+    input:focus, textarea:focus {
+        border-color: #00f2fe !important;
+        box-shadow: 0 0 10px rgba(0, 242, 254, 0.5) !important;
+    }
+
+    /* Sub-metric card modifications to keep transparent inside main block */
+    div[data-testid="metric-container"] {
+        background: rgba(0, 0, 0, 0.2) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 12px;
+        padding: 15px !important;
+    }
+
+    /* Custom Modern Tab Elements Styling */
+    div[data-testid="stHorizontalBlock"] button {
+        background: rgba(255, 255, 255, 0.05) !important;
         color: #ffffff !important;
-        font-weight: 600 !important;
-        -webkit-text-fill-color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 30px !important;
+        padding: 10px 24px !important;
+        transition: all 0.3s ease;
     }
-
-    /* Target placeholder input text fields explicitly to stay clear and highly readable */
-    div[data-testid="stTextInput"] input::placeholder {
-        color: rgba(255, 255, 255, 0.7) !important;
-        -webkit-text-fill-color: rgba(255, 255, 255, 0.7) !important;
-        opacity: 1 !important;
+    div[data-testid="stHorizontalBlock"] button:hover {
+        background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important;
+        color: #0a0a0e !important;
+        font-weight: bold;
+        box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
     }
-
-    /* Force all layout labels, widget headers, and values to bold stark white */
-    div[data-testid="stTextInput"] label, 
-    div[data-testid="stDateInput"] label, 
-    div[data-testid="stNumberInput"] label,
-    .stSlider label, p, span, h4, h1, h2, h3 {
-        color: #ffffff !important;
-        font-size: 0.96rem !important;
-        font-weight: 700 !important;
-        text-shadow: 0px 1px 5px rgba(0, 0, 0, 0.95) !important;
-    }
-
-    .sub-title-text {
-        color: #e2e8f0 !important;
-        font-size: 0.9rem !important;
-        font-weight: 500 !important;
-        margin-top: 2px !important;
-        margin-bottom: 25px !important;
-    }
-
-    .gradient-title {
-        background: linear-gradient(45deg, #00d1ff, #00ff88);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-weight: 800;
-        font-size: 2rem !important;
-    }
-
-    @keyframes pulseGlow {
-        0% { transform: scale(0.95); opacity: 0.6; }
-        50% { transform: scale(1.05); opacity: 1; }
-        100% { transform: scale(0.95); opacity: 0.6; }
-    }
-    .status-ping {
-        display: inline-block;
-        width: 11px;
-        height: 11px;
-        background: #00ff88;
-        border-radius: 50%;
-        margin-right: 10px;
-        animation: pulseGlow 2s infinite ease-in-out;
-    }
-    .block-container { padding-top: 2.5rem !important; padding-bottom: 1rem !important; }
 </style>
-""", unsafe_allow_html=True)
+""", unsafe_html=True)
 
-# Top Bar Title Layout Context
-st.markdown('<div><span class="status-ping"></span><span class="gradient-title">OmniSync 3D Pro</span></div>', unsafe_allow_html=True)
-st.markdown("<p class='sub-title-text'>Real-time AI Multi-Channel Engine for Luxury Stays</p>", unsafe_allow_html=True)
-# Session tracking state initialization
-if 'active_view' not in st.session_state:
-    st.session_state.active_view = "Live Multi-Channel View"
+# --- APPLICATION SESSION STATE NAVIGATION ARCHITECTURE ---
+if "current_view" not in st.session_state:
+    st.session_state.current_view = "hub"
+if "saved_listings" not in st.session_state:
+    st.session_state.saved_listings = []
 
-# Render completely filled interactive tab row configurations with unique actions
-t1, t2, t3, t4 = st.columns(4)
-with t1:
-    if st.button("🌐 Live Channels Matrix", use_container_width=True):
-        st.session_state.active_view = "Live Multi-Channel View"
-with t2:
-    if st.button("📊 Sync Optimization Log", use_container_width=True):
-        st.session_state.active_view = "Optimization Performance Log"
-with t3:
-    if st.button("🤖 Dynamic AI Insights", use_container_width=True):
-        st.session_state.active_view = "Dynamic AI Insights Dashboard"
-with t4:
-    if st.button("⚙️ Core Engine Settings", use_container_width=True):
-        st.session_state.active_view = "System Engine Configuration"
+# Top Header Branding
+st.title("PROPAI // Luxury Portfolio Command")
+st.markdown("### High-fidelity distributed asset optimization for property owners.")
 
-st.write("")
+# Tab-Action Button Row Configuration
+nav_cols = st.columns(4)
+with nav_cols[0]:
+    if st.button("🌐 Listing Generator Hub", use_container_width=True):
+        st.session_state.current_view = "hub"
+with nav_cols[1]:
+    if st.button("📅 Channel Matrix Engine", use_container_width=True):
+        st.session_state.current_view = "matrix"
+with nav_cols[2]:
+    if st.button("📈 Revenue Optimization Assistant", use_container_width=True):
+        st.session_state.current_view = "revenue"
+with nav_cols[3]:
+    if st.button("⚙️ Infrastructure Credentials", use_container_width=True):
+        st.session_state.current_view = "infrastructure"
 
-# Render layout modules dynamically based on active selection from top functional tabs
-if st.session_state.active_view == "Live Multi-Channel View":
-    left_panel, right_panel = st.columns([1, 1.2])
+st.write("---")
 
-    with left_panel:
-        st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-        st.markdown("<p style='font-size:1.15rem; font-weight:700; margin-top:0; margin-bottom:15px; color:#ffffff;'>⛓️ Node Integration Hub</p>", unsafe_allow_html=True)
+# --- ACTIVE WORKSPACE VIEW: TAB 1 ---
+if st.session_state.current_view == "hub":
+    left_col, right_col = st.columns([1, 1.1], gap="large")
+
+    # Left Column Panel: Node Integration Hub
+    with left_col:
+        st.subheader("🔗 API Node Integrations & Asset Data")
         
-        airbnb_node = st.text_input("Airbnb iCal Link", value="https://example.com")
-        vrbo_node = st.text_input("Vrbo Pipeline", placeholder="Paste Vrbo .ics calendar link")
-        booking_node = st.text_input("Booking.com Node", placeholder="Paste Booking.com calendar feed")
-        expedia_node = st.text_input("Expedia Loop", placeholder="Enter Expedia channel feed")
-        agoda_node = st.text_input("Agoda Ledger", placeholder="Enter Agoda calendar endpoint")
+        # Five Core Node URL Inputs
+        airbnb_link = st.text_input("Airbnb Pipeline Endpoint", placeholder="https://airbnb.com")
+        vrbo_link = st.text_input("Vrbo Pipeline Endpoint", placeholder="https://vrbo.com")
+        booking_link = st.text_input("Booking.com Infrastructure Node", placeholder="https://booking.com")
+        expedia_link = st.text_input("Expedia Multi-Loop", placeholder="https://expedia.com")
+        agoda_link = st.text_input("Agoda Distributed Ledger", placeholder="https://agoda.com")
         
-        # Submit, Save, and Apply Changes action button
-        st.write("")
-        if st.button("💾 Apply & Save Node Formations", type="primary", use_container_width=True):
-            st.toast("⚡ Node sync matrix updated successfully!", icon="✅")
-            
-        st.markdown('</div>', unsafe_allow_html=True)
+        st.write("---")
+        
+        # Meta Form Details
+        prop_title = st.text_input("Property Asset Title", placeholder="e.g., The Obsidian Horizon Infinity Villa")
+        nightly_rate = st.number_input("Target Nightly Base Rate ($)", min_value=0.0, value=750.00, step=50.0)
+        stay_duration = st.multiselect("Enforced Minimum Stay Rules", ["1 Night Dynamic", "3 Nights Standard", "5 Nights Weekly Lock", "7+ Nights Corporate Tier"], default=["3 Nights Standard"])
+        facility_tags = st.multiselect("Premium Property Infrastructure Amenities", ["Infinity Edge Pool", "Helipad Access", "Private Sommelier Cellar", "Smart Automation Mesh", "Tesla Supercharger Station"], default=["Infinity Edge Pool", "Smart Automation Mesh"])
+        
+        # Primary Action Button
+        if st.button("💾 Save & Deploy Asset Clusters", type="primary", use_container_width=True):
+            st.toast(f"✔️ Asset Cluster Sync Sequence Triggered: '{prop_title if prop_title else 'Default Asset'}' fully initialized across all network channels!", icon="🚀")
+            st.session_state.saved_listings.append({
+                "title": prop_title,
+                "rate": nightly_rate,
+                "amenities": facility_tags
+            })
 
-    with right_panel:
-        m1, m2, m3 = st.columns(3)
-        with m1:
-            st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-            st.markdown("<span style='color: #ffffff; font-size:0.8rem; font-weight:700;'>ACTIVE PIPELINES</span>", unsafe_allow_html=True)
-            connected = sum(1 for node in [airbnb_node, vrbo_node, booking_node, expedia_node, agoda_node] if node)
-            st.markdown(f"<p style='color: #00d1ff; font-size: 1.8rem; font-weight:800; margin:4px 0;'>{connected} <span style='font-size:0.85rem; color:#e2e8f0; font-weight:500;'>/ 5 Connected</span></p>", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-        with m2:
-            st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-            st.markdown("<span style='color: #ffffff; font-size:0.8rem; font-weight:700;'>SYNC VELOCITY</span>", unsafe_allow_html=True)
-            st.markdown("<p style='color: #00ff88; font-size: 1.8rem; font-weight:800; margin:4px 0;'>Realtime <span style='font-size:0.85rem; color:#e2e8f0; font-weight:500;'>⚡ 0.4s lag</span></p>", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-        with m3:
-            st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-            st.markdown("<span style='color: #ffffff; font-size:0.8rem; font-weight:700;'>OVERLAP RISK</span>", unsafe_allow_html=True)
-            st.markdown("<p style='color: #ff4b4b; font-size: 1.8rem; font-weight:800; margin:4px 0;'>0.00% <span style='font-size:0.85rem; color:#e2e8f0; font-weight:500;'>Shield On</span></p>", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-            st.markdown("<p style='font-size:1rem; font-weight:700; margin-top:0; color:#ffffff;'>📅 Unified Ledger Matrix</p>", unsafe_allow_html=True)
-            selected_slot = st.date_input("Inquire Block Dates", datetime.now().date())
-            if airbnb_node:
-                st.markdown("<div style='padding: 10px; background: rgba(0, 255, 136, 0.08); border-left: 3px solid #00ff88; border-radius: 4px; color: #00ff88; font-size:0.85rem;'>✅ Live protection mapping active.</div>", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
-        with c2:
-            st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-            st.markdown("<p style='font-size:1rem; font-weight:700; margin-top:0; color:#ffffff;'>🤖 AI Predictive Rate Engine</p>", unsafe_allow_html=True)
-            base_rate = st.number_input("Base Nightly Rate ($)", min_value=10, value=250)
-            yield_multiplier = st.select_slider("Environmental Scaler", options=["Off-Peak (-20%)", "Standard Pricing", "Surge Demand (+35%)"], value="Standard Pricing")
+    # Right Column Panel: Live Automated Output Matrix
+    with right_col:
+        st.subheader("🖥️ Live Distributed Output Matrix")
+        
+        # Upper Header Metrics Matrix Rows
+        m_col1, m_col2, m_col3 = st.columns(3)
+        with m_col1:
+            st.metric(label="Active Network Pipelines", value="5 / 5 Connected", delta="100% Uptime")
+        with m_col2:
+            st.metric(label="Sync Velocity Status", value="0.42 ms", delta="-12ms Optimization", delta_color="inverse")
+        with m_col3:
+            is_occupied = st.toggle("Asset Current Status Matrix", value=False, help="Toggle between Available (Off) and Occupied (On)")
+            status_text = "🔴 OCCUPIED / LOCKED" if is_occupied else "🟢 AVAILABLE / Dynamic Booking Open"
+            st.markdown(f"**Status State:** \n### {status_text}")
             
-            calculated_factor = 1.0
-            if "Off-Peak" in yield_multiplier: calculated_factor = 0.8
-            elif "Surge" in yield_multiplier: calculated_factor = 1.35
-            
-            st.markdown(f"<p style='color: #ffffff; font-size: 1.1rem; margin-top:12px; margin-bottom:0;'>Optimized Rate: <span style='color: #00ff88; font-weight:800;'>${round(base_rate * calculated_factor, 2)}</span></p>", unsafe_allow_html=True)
-            st.markdown('</div>', unsafe_allow_html=True)
+        st.write("---")
+        
+        # AI Output Previews Container
+        st.markdown("#### 🤖 Real-Time Generative Asset Outputs")
+        
+        preview_title = prop_title if prop_title else "The Emerald Oasis Estate"
+        preview_amenities = ", ".join(facility_tags) if facility_tags else "Premium Selected Accommodations"
+        
+        ai_sales_draft = f"""Welcome to **{preview_title}**, an ultra-premium sanctuary engineered for modern travelers. Featuring state-of-the-art infrastructure integrations like `{preview_amenities}`, this breathtaking architectural statement delivers unmatched refinement. Live occupancy windows are completely balanced across active booking ledger channels instantly."""
+        
+        st.text_area("AI Sales Description Output Field", value=ai_sales_draft, height=180, disabled=True)
+        
+        seo_tags = f"<meta name='description' content='Book your ultimate elite getaway at {preview_title}. Options include custom booking loops via Airbnb, Vrbo, and Booking.com Node Integration Grid.'> \n<meta name='keywords' content='Luxury Vacation, {preview_title}, {preview_amenities}, Premium Property Infrastructure'>"
+        st.text_area("SEO Meta Tag Distribution Window", value=seo_tags, height=120, disabled=True)
 
-else:
-    # Secondary navigation view layouts logic
-    st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-    st.markdown(f"<h3 style='color:#ffffff;'>📊 Matrix Layer: {st.session_state.active_view}</h3>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#cbd5e1; font-weight:400;'>This partition structure connects to active live data simulated sockets. Node link modifications will update these system matrix records automatically.</p>", unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+# --- PLACEHOLDER ENGINE VIEWS FOR REMAINING STATE TABS ---
+elif st.session_state.current_view == "matrix":
+    st.subheader("📅 Channel Matrix Engine Grid")
+    st.info("Comprehensive reservation synchronization matrices and downstream node blockouts appear here.")
+    st.write("All connected channels (Airbnb, Vrbo, Booking.com, Expedia, Agoda) are dynamically executing parallel webhook validation sequences.")
+
+elif st.session_state.current_view == "revenue":
+    st.subheader("📈 AI Yield Optimization & Financial Projections")
+    st.info("Real-time localized demand curves and high-end predictive analytics engine workspace.")
+    st.metric(label="Target Portfolio Yield Optimization Velocity", value="$42,850.00 / mo", delta="+12.4% vs Market Baseline")
+
+elif st.session_state.current_view == "infrastructure":
+    st.subheader("⚙️ System Core Infrastructure Credentials")
+
+st.warning("Secure hardware layer token keys. Do not expose private cryptographic API signatures.")
+st.text_input("OAuth Multi-Channel API Bearer Secret Token Key", value="●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●●", type="password", disabled=True)
