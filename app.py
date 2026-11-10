@@ -1,76 +1,63 @@
 import streamlit as st
 from datetime import datetime
 
-# Force layout compression and remove standard margins
-st.set_page_config(page_title="OmniSync 3D Pro", page_icon="⚡", layout="wide", initial_sidebar_state="collapsed")
+# Compress layout and clear out default margins completely
+st.set_page_config(
+    page_title="OmniSync 3D Pro", 
+    page_icon="⚡", 
+    layout="wide", 
+    initial_sidebar_state="collapsed"
+)
 
-# Complete Premium UI Architecture Injection with Fixed Streaming Background
+# Premium CSS Architecture Injection - Completely removes empty elements and fixes background
 st.markdown("""
 <style>
-    /* Full-screen video container backdrop placement */
-    .video-wrapper {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: -100;
-        overflow: hidden;
-        background: #0e1117;
-    }
-    
-    /* Embed element styling to ensure absolute coverage */
-    .video-wrapper iframe {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100vw;
-        height: 56.25vw; /* 16:9 Aspect Ratio */
-        min-height: 100vh;
-        min-width: 177.77vh; /* 16:9 Aspect Ratio */
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-        opacity: 0.35; /* Darkens video to keep UI text perfectly readable */
+    /* Premium Resort-Themed Animated Gradient Background */
+    .stApp {
+        background: linear-gradient(-45deg, #06101e, #0b1e36, #122e4f, #07162c) !important;
+        background-size: 400% 400% !important;
+        animation: gradientAnimation 15s ease infinite !important;
     }
 
-    /* Reset core app container to see the video layer */
-    .stApp {
-        background: transparent !important;
+    @keyframes gradientAnimation {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
     
-    /* Global structural fix for font size & line heights */
+    /* Global Typography Scale Adjustments */
     html, body, [data-testid="stMarkdownContainer"] p {
-        font-size: 0.95rem !important;
+        font-size: 0.92rem !important;
         color: #e2e8f0 !important;
         line-height: 1.4 !important;
     }
 
-    /* 3D Glassmorphism Cards: Clean, tight, and highly elevated */
+    /* Fixed 3D Glassmorphism Panel Container: Eliminates unwanted top space blocks */
     .dashboard-card {
-        background: rgba(10, 25, 47, 0.70) !important;
-        border: 1px solid rgba(255, 255, 255, 0.15) !important;
-        border-radius: 12px !important;
-        padding: 18px 22px !important;
-        box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+        background: rgba(10, 25, 47, 0.75) !important;
+        border: 1px solid rgba(0, 209, 255, 0.15) !important;
+        border-radius: 14px !important;
+        padding: 20px 24px !important;
+        box-shadow: 0 12px 40px -12px rgba(2, 12, 27, 0.8);
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
         transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-        margin-bottom: 15px;
+        margin-bottom: 16px;
     }
     
-    /* Interactive Motion Hover Effect */
+    /* Interactive Hover Motion Translation */
     .dashboard-card:hover {
-        transform: translateY(-5px) scale(1.005);
-        box-shadow: 0 20px 40px -15px rgba(0, 209, 255, 0.35);
-        border-color: rgba(0, 209, 255, 0.6) !important;
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px -15px rgba(0, 209, 255, 0.3);
+        border-color: rgba(0, 209, 255, 0.5) !important;
     }
 
-    /* Redesigned Streamlit input blocks to completely remove the black squares */
+    /* Input Field Custom Overrides - Turns black bars into smooth input boxes */
     div[data-testid="stTextInput"] > div {
-        background: rgba(255, 255, 255, 0.07) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        background: rgba(255, 255, 255, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.18) !important;
         color: white !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
     }
     div[data-testid="stTextInput"] input {
         color: #ffffff !important;
@@ -80,57 +67,49 @@ st.markdown("""
         font-size: 0.85rem !important;
         color: #cbd5e1 !important;
         font-weight: 500 !important;
-        margin-bottom: 4px !important;
     }
 
-    /* Header scaling balance */
+    /* Radiant Title Typography */
     .gradient-title {
         background: linear-gradient(45deg, #00d1ff, #00ff88);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: 700;
         font-size: 1.85rem !important;
-        margin: 0 !important;
         letter-spacing: -0.5px;
     }
 
-    /* Live animation element pulse */
+    /* Pulsing status ping indicator */
     @keyframes pulseGlow {
-        0% { transform: scale(0.95); opacity: 0.5; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
-        50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 12px 4px rgba(0, 255, 136, 0.5); }
-        100% { transform: scale(0.95); opacity: 0.5; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.7); }
+        0% { transform: scale(0.95); opacity: 0.6; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.5); }
+        50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 12px 4px rgba(0, 255, 136, 0.4); }
+        100% { transform: scale(0.95); opacity: 0.6; box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.5); }
     }
     .status-ping {
         display: inline-block;
-        width: 10px;
-        height: 10px;
+        width: 9px;
+        height: 9px;
         background: #00ff88;
         border-radius: 50%;
         margin-right: 10px;
         animation: pulseGlow 2s infinite ease-in-out;
     }
 
-    /* Cleaned up layout spacing overrides */
-    .block-container { padding-top: 2rem !important; padding-bottom: 1rem !important; }
+    /* Clean spacing layout blocks */
+    .block-container { padding-top: 1.5rem !important; padding-bottom: 1rem !important; }
 </style>
-
-<!-- High-Definition Unblocked Resort Streaming Loop Background -->
-<div class="video-wrapper">
-    <iframe src="https://youtube.com" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-</div>
 """, unsafe_allow_html=True)
 
 # Top Bar Header Container
 st.markdown('<div><span class="status-ping"></span><span class="gradient-title">OmniSync 3D Pro</span></div>', unsafe_allow_html=True)
 st.markdown("<p style='color: #94a3b8; font-size: 0.88rem; margin-top: 2px; margin-bottom: 25px;'>Real-time AI Multi-Channel Engine for Luxury Stays</p>", unsafe_allow_html=True)
 
-# Global Grid Layout Split
-left_panel, right_panel = st.columns([1, 2])
+# Main Grid Hub split layout configuration
+left_panel, right_panel = st.columns([1, 1.2])
 
 with left_panel:
-    # Everything is enclosed inside a clean glassmorphism card container
     st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-    st.markdown("<p style='font-size:1.05rem; font-weight:600; margin-top:0; margin-bottom:12px; color:#ffffff;'>⛓️ Node Integration Hub</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:1.05rem; font-weight:600; margin-top:0; margin-bottom:15px; color:#ffffff;'>⛓️ Node Integration Hub</p>", unsafe_allow_html=True)
     
     # 5 Premium Platform Pipelines with clean custom inner styles
     airbnb_node = st.text_input("Airbnb iCal Link", value="https://example.com")
@@ -141,7 +120,7 @@ with left_panel:
     st.markdown('</div>', unsafe_allow_html=True)
 
 with right_panel:
-    # Top Metrics Grid
+    # Row 1: Metrics Panels
     m1, m2, m3 = st.columns(3)
     
     with m1:
@@ -163,7 +142,7 @@ with right_panel:
         st.markdown("<p style='color: #ff4b4b; font-size: 1.8rem; font-weight:700; margin:4px 0;'>0.00% <span style='font-size:0.85rem; color:#94a3b8; font-weight:400;'>Shield On</span></p>", unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
-    # Core Execution Modules
+    # Row 2: Operation Blocks
     c1, c2 = st.columns(2)
     
     with c1:
