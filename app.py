@@ -9,16 +9,16 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. Change the Top Bar color + 3. High-Definition Resort Slideshow Background + CSS Polish
+# Color overrides for top bar highlight and custom background slideshow
 st.markdown("""
 <style>
-    /* Issue #2 Fixed: Color override for the default Streamlit top decoration bar */
+    /* Color override for the default Streamlit top decoration bar */
     header[data-testid="stHeader"] {
         background-color: #00d1ff !important;
         box-shadow: 0 2px 20px rgba(0, 209, 255, 0.4);
     }
 
-    /* Issue #3 Fixed: Automated High-Definition Resort Slideshow Background CSS Loop */
+    /* Automated High-Definition Resort Slideshow Background CSS Loop */
     .stApp {
         background-size: cover !important;
         background-position: center !important;
@@ -30,19 +30,19 @@ st.markdown("""
     @keyframes resortSlideshow {
         0%, 100% { 
             background-image: linear-gradient(rgba(10, 25, 47, 0.75), rgba(10, 25, 47, 0.75)), 
-            url('https://unsplash.com'); /* Luxury Overwater Resort Pool */
+            url('https://unsplash.com');
         }
         25% { 
             background-image: linear-gradient(rgba(10, 25, 47, 0.75), rgba(10, 25, 47, 0.75)), 
-            url('https://unsplash.com'); /* Boutique Hotel Exterior */
+            url('https://unsplash.com');
         }
         50% { 
             background-image: linear-gradient(rgba(10, 25, 47, 0.75), rgba(10, 25, 47, 0.75)), 
-            url('https://unsplash.com'); /* Elegant Boutique Room Bedding */
+            url('https://unsplash.com');
         }
         75% { 
             background-image: linear-gradient(rgba(10, 25, 47, 0.75), rgba(10, 25, 47, 0.75)), 
-            url('https://unsplash.com'); /* Tropical Luxury Villa Pool */
+            url('https://unsplash.com');
         }
     }
     
@@ -58,7 +58,6 @@ st.markdown("""
         margin-bottom: 16px;
     }
     
-    /* Custom style overrides to remove the ugly black boxes around text entries */
     div[data-testid="stTextInput"] > div, div[data-testid="stNumberInput"] > div {
         background: rgba(255, 255, 255, 0.06) !important;
         border: 1px solid rgba(255, 255, 255, 0.18) !important;
@@ -77,7 +76,6 @@ st.markdown("""
         font-size: 1.85rem !important;
     }
 
-    /* Live animation element pulse */
     @keyframes pulseGlow {
         0% { transform: scale(0.95); opacity: 0.6; }
         50% { transform: scale(1.05); opacity: 1; }
@@ -100,46 +98,41 @@ st.markdown("""
 st.markdown('<div><span class="status-ping"></span><span class="gradient-title">OmniSync 3D Pro</span></div>', unsafe_allow_html=True)
 st.markdown("<p style='color: #94a3b8; font-size: 0.88rem; margin-top: 2px; margin-bottom: 25px;'>Real-time AI Multi-Channel Engine for Luxury Stays</p>", unsafe_allow_html=True)
 
-# Initialize functional session state parameters for Issue #1 actions
-if 'active_view' not in st.state:
-    st.state.active_view = "Live Multi-Channel View"
+# FIXED: Replaced invalid st.state syntax with proper st.session_state
+if 'active_view' not in st.session_state:
+    st.session_state.active_view = "Live Multi-Channel View"
 
-# Issue #1 Fixed: Replace blank tab rows with functional text tab action buttons
+# Tab Configuration Rows
 t1, t2, t3, t4 = st.columns(4)
 with t1:
     if st.button("🌐 Live Channels Matrix", use_container_width=True):
-        st.state.active_view = "Live Multi-Channel View"
+        st.session_state.active_view = "Live Multi-Channel View"
 with t2:
     if st.button("📊 Sync Optimization Log", use_container_width=True):
-        st.state.active_view = "Optimization Performance Log"
+        st.session_state.active_view = "Optimization Performance Log"
 with t3:
     if st.button("🤖 Dynamic AI Insights", use_container_width=True):
-        st.state.active_view = "Dynamic AI Insights Dashboard"
+        st.session_state.active_view = "Dynamic AI Insights Dashboard"
 with t4:
     if st.button("⚙️ Core Engine Settings", use_container_width=True):
-        st.state.active_view = "System Engine Configuration"
+        st.session_state.active_view = "System Engine Configuration"
 
-# Space buffer before modules layout
 st.write("")
 
 # Render layout modules dynamically based on active selection from top functional tabs
-if st.state.active_view == "Live Multi-Channel View":
-    
-    # Core Main Split Grid Architecture Mapping
+if st.session_state.active_view == "Live Multi-Channel View":
     left_panel, right_panel = st.columns([1, 1.2])
 
     with left_panel:
         st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
         st.markdown("<p style='font-size:1.05rem; font-weight:600; margin-top:0; margin-bottom:15px; color:#ffffff;'>⛓️ Node Integration Hub</p>", unsafe_allow_html=True)
         
-        # 5 Premium Platform Pipelines
         airbnb_node = st.text_input("Airbnb iCal Link", value="https://example.com")
         vrbo_node = st.text_input("Vrbo Pipeline", placeholder="Paste Vrbo .ics calendar link")
         booking_node = st.text_input("Booking.com Node", placeholder="Paste Booking.com calendar feed")
         expedia_node = st.text_input("Expedia Loop", placeholder="Enter Expedia channel feed")
         agoda_node = st.text_input("Agoda Ledger", placeholder="Enter Agoda calendar endpoint")
         
-        # Issue #4 Fixed: Submit, Save, and Apply Changes Button integration layer
         st.write("")
         if st.button("💾 Apply & Save Node Formations", type="primary", use_container_width=True):
             st.toast("⚡ Node sync matrix updated successfully!", icon="✅")
@@ -147,7 +140,6 @@ if st.state.active_view == "Live Multi-Channel View":
         st.markdown('</div>', unsafe_allow_html=True)
 
     with right_panel:
-        # Row 1 Metrics Panels
         m1, m2, m3 = st.columns(3)
         with m1:
             st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
@@ -166,7 +158,6 @@ if st.state.active_view == "Live Multi-Channel View":
             st.markdown("<p style='color: #ff4b4b; font-size: 1.8rem; font-weight:700; margin:4px 0;'>0.00% <span style='font-size:0.85rem; color:#94a3b8; font-weight:400;'>Shield On</span></p>", unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True)
 
-        # Row 2 Operation Engine Modules
         c1, c2 = st.columns(2)
         with c1:
             st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
@@ -180,18 +171,16 @@ if st.state.active_view == "Live Multi-Channel View":
             st.markdown("<p style='font-size:1rem; font-weight:600; margin-top:0; color:#ffffff;'>🤖 AI Predictive Rate Engine</p>", unsafe_allow_html=True)
             base_rate = st.number_input("Base Nightly Rate ($)", min_value=10, value=250)
             yield_multiplier = st.select_slider("Environmental Scaler", options=["Off-Peak (-20%)", "Standard Pricing", "Surge Demand (+35%)"], value="Standard Pricing")
-    calculated_factor = 1.0
-    if "Off-Peak" in yield_multiplier: 
-        calculated_factor = 0.8
-    elif "Surge" in yield_multiplier: 
-        calculated_factor = 1.35
-        
-    st.markdown(f"<p style='color: #ffffff; font-size: 1.1rem; margin-top:12px; margin-bottom:0;'>Optimized Rate: <span style='color: #00ff88; font-weight:700;'>${round(base_rate * calculated_factor, 2)}</span></p>", unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
+            
+            calculated_factor = 1.0
+            if "Off-Peak" in yield_multiplier: calculated_factor = 0.8
+            elif "Surge" in yield_multiplier: calculated_factor = 1.35
+            
+            st.markdown(f"<p style='color: #ffffff; font-size: 1.1rem; margin-top:12px; margin-bottom:0;'>Optimized Rate: <span style='color: #00ff88; font-weight:700;'>${round(base_rate * calculated_factor, 2)}</span></p>", unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
 
 else:
-    # Secondary tab layouts logic
     st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
-    st.subheader(f"📊 Matrix Layer: {st.state.active_view}")
+    st.subheader(f"📊 Matrix Layer: {st.session_state.active_view}")
     st.info("This system segment is active and running in background simulation. Connect premium channels node links to see log lines update live.")
     st.markdown('</div>', unsafe_allow_html=True)
