@@ -180,16 +180,18 @@ if st.state.active_view == "Live Multi-Channel View":
             st.markdown("<p style='font-size:1rem; font-weight:600; margin-top:0; color:#ffffff;'>🤖 AI Predictive Rate Engine</p>", unsafe_allow_html=True)
             base_rate = st.number_input("Base Nightly Rate ($)", min_value=10, value=250)
             yield_multiplier = st.select_slider("Environmental Scaler", options=["Off-Peak (-20%)", "Standard Pricing", "Surge Demand (+35%)"], value="Standard Pricing")
-            
-            calculated_factor = 1.0
-            if "Off-Peak" in yield_multiplier: calculated_factor = 0.8
-            elif "Surge" in yield_multiplier: calculated_factor = 1.35
-            
-st.markdown(f"Optimized Rate: ${round(base_rate * calculated_factor, 2)}", unsafe_allow_html=True)
-st.markdown('', unsafe_allow_html=True)
+    calculated_factor = 1.0
+    if "Off-Peak" in yield_multiplier: 
+        calculated_factor = 0.8
+    elif "Surge" in yield_multiplier: 
+        calculated_factor = 1.35
+        
+    st.markdown(f"<p style='color: #ffffff; font-size: 1.1rem; margin-top:12px; margin-bottom:0;'>Optimized Rate: <span style='color: #00ff88; font-weight:700;'>${round(base_rate * calculated_factor, 2)}</span></p>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
+
 else:
-# Secondary tab layouts logic
-st.markdown('', unsafe_allow_html=True)
-st.subheader(f"📊 Matrix Layer: {st.state.active_view}")
-st.info("This system segment is active and running in background simulation. Connect premium channels node links to see log lines update live.")
-st.markdown('', unsafe_allow_html=True)
+    # Secondary tab layouts logic
+    st.markdown('<div class="dashboard-card">', unsafe_allow_html=True)
+    st.subheader(f"📊 Matrix Layer: {st.state.active_view}")
+    st.info("This system segment is active and running in background simulation. Connect premium channels node links to see log lines update live.")
+    st.markdown('</div>', unsafe_allow_html=True)
