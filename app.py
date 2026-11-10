@@ -99,7 +99,7 @@ st.markdown("""
         box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
     }
 </style>
-""", unsafe_html=True)
+""", unsafe_allow_html=True)
 
 # --- APPLICATION SESSION STATE NAVIGATION ARCHITECTURE ---
 if "current_view" not in st.session_state:
